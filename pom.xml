@@ -54,7 +54,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <build>
-    <finalName>cursus</finalName>
-  </build>
+
 </project>
