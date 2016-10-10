@@ -1,7 +1,8 @@
 package cursus.jaxrs;
 
-import cursus.dal.DataAccess;
-import cursus.dal.oracle.DataAccessOracle;
+import cursus.dal.repositories.IRepository;
+import cursus.dal.repositories.RepositoryOracle;
+import cursus.domain.Student;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -12,16 +13,21 @@ import java.util.Arrays;
  * Created by maart on 9-10-2016.
  */
 
-@Path("/learners")
-public class JaxrsLearner {
+@Path("/student")
+public class JaxrsStudent {
 
-    DataAccess data = new DataAccessOracle();
+    IRepository data = new RepositoryOracle();
 
     @Context
     UriInfo uriInfo;
 
     @GET
+    @Path("/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Student getStudent(@PathParam("id") String id){
+         return null;
+    }
+
     public ArrayList<String> getallTest(){
         return new ArrayList<>(Arrays.asList("aaa", "bbb"));
     }
