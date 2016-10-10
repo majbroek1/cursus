@@ -2,6 +2,7 @@ package cursus.jaxrs;
 
 import cursus.dal.repositories.IRepository;
 import cursus.dal.repositories.RepositoryOracle;
+import cursus.dal.validator.OracleValidator;
 import cursus.domain.Student;
 
 import javax.ws.rs.*;
@@ -16,8 +17,6 @@ import java.util.Arrays;
 @Path("/student")
 public class JaxrsStudent {
 
-    IRepository data = new RepositoryOracle();
-
     @Context
     UriInfo uriInfo;
 
@@ -25,7 +24,9 @@ public class JaxrsStudent {
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Student getStudent(@PathParam("id") String id){
-         return null;
+        Integer.parseInt(id);
+
+        return null;
     }
 
     public ArrayList<String> getallTest(){

@@ -36,7 +36,7 @@ public class RepositoryOracle implements IRepository {
         }
     }
 
-    public Course getCourse(int courseId) {
+    public Course getCourse(int courseId) throws SQLException {
         Course course = null;
         try {
             openConnection();
@@ -58,8 +58,6 @@ public class RepositoryOracle implements IRepository {
             }
             resultSet.close();
             stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
             closeConnection();
         }
@@ -67,7 +65,7 @@ public class RepositoryOracle implements IRepository {
     }
 
     @Override
-    public ArrayList<Student> getAllStudents() {
+    public ArrayList<Student> getAllStudents() throws SQLException {
         ArrayList<Student> result = new ArrayList<>();
         try {
             openConnection();
@@ -90,15 +88,13 @@ public class RepositoryOracle implements IRepository {
             }
             resultSet.close();
             stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
             closeConnection();
         }
         return result;
     }
 
-    public ArrayList<Course> getAllCourses() {
+    public ArrayList<Course> getAllCourses() throws SQLException {
         ArrayList<Course> result = new ArrayList<>();
         try {
             openConnection();
@@ -119,8 +115,6 @@ public class RepositoryOracle implements IRepository {
             }
             resultSet.close();
             stmt.close();
-        } catch (Exception e) {
-            System.out.println(e);
         } finally {
             closeConnection();
         }
@@ -128,7 +122,7 @@ public class RepositoryOracle implements IRepository {
     }
 
     @Override
-    public boolean addStudent(Student student) {
+    public boolean addStudent(Student student) throws SQLException {
         boolean result = false;
         try {
             openConnection();
@@ -151,15 +145,13 @@ public class RepositoryOracle implements IRepository {
                 result = true;
             }
             stmt.close();
-        } catch (Exception e) {
-            System.out.println(e);
         } finally {
             closeConnection();
         }
         return result;
     }
 
-    public boolean addCourse(Course course) {
+    public boolean addCourse(Course course) throws SQLException {
         boolean result = false;
         try {
             openConnection();
@@ -180,8 +172,6 @@ public class RepositoryOracle implements IRepository {
                 result = true;
             }
             stmt.close();
-        } catch (Exception e) {
-            System.out.println(e);
         } finally {
             closeConnection();
         }
@@ -189,7 +179,7 @@ public class RepositoryOracle implements IRepository {
     }
 
     @Override
-    public Student getStudent(int studentId) {
+    public Student getStudent(int studentId) throws SQLException {
         Student student = null;
         try {
             openConnection();
@@ -213,8 +203,6 @@ public class RepositoryOracle implements IRepository {
             }
             resultSet.close();
             stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
             closeConnection();
         }
@@ -222,7 +210,7 @@ public class RepositoryOracle implements IRepository {
     }
 
     @Override
-    public Company getCompany(int companyId) {
+    public Company getCompany(int companyId) throws SQLException {
         Company company = null;
         try {
             openConnection();
@@ -243,8 +231,6 @@ public class RepositoryOracle implements IRepository {
             }
             resultSet.close();
             stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
             closeConnection();
         }

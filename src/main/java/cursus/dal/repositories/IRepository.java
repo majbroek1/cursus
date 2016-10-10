@@ -4,6 +4,7 @@ import cursus.domain.Company;
 import cursus.domain.Course;
 import cursus.domain.Student;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -11,19 +12,21 @@ import java.util.ArrayList;
  */
 public interface IRepository {
 
-    Course getCourse(int courseId);
+    Course getCourse(int courseId) throws SQLException;
 
-    ArrayList<Course> getAllCourses();
+    ArrayList<Course> getAllCourses() throws SQLException;
 
-    boolean addCourse(Course course);
+    boolean addCourse(Course course) throws SQLException;
 
-    Student getStudent(int studentId);
+    Student getStudent(int studentId) throws SQLException;
 
-    ArrayList<Student> getAllStudents();
+    ArrayList<Student> getAllStudents() throws SQLException;
 
-    boolean addStudent(Student student);
+    boolean addStudent(Student student) throws SQLException;
 
-    Company getCompany(int companyId);
+    Company getCompany(int companyId) throws SQLException;
+
+
 
 
 }
