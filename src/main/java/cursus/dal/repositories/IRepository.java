@@ -18,7 +18,9 @@ public interface IRepository {
 
     boolean addCourse(Course course) throws SQLException;
 
-    Student getStudent(int studentId) throws SQLException;
+    Student getStudentById(int studentId) throws SQLException;
+
+    ArrayList<Student> getStudentsByEmail(String studentMail) throws SQLException;
 
     ArrayList<Student> getAllStudents() throws SQLException;
 

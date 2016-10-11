@@ -1,12 +1,11 @@
 package cursus.jaxrs;
 
-import cursus.dal.repositories.IRepository;
-import cursus.dal.repositories.RepositoryOracle;
-import cursus.dal.validator.OracleValidator;
+import cursus.controller.Controller;
 import cursus.domain.Student;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -17,16 +16,23 @@ import java.util.Arrays;
 @Path("/student")
 public class JaxrsStudent {
 
+    Controller controller = new Controller();
+
     @Context
     UriInfo uriInfo;
 
     @GET
-    @Path("/{id}")
+    @Path("id/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Student getStudent(@PathParam("id") String id){
-        Integer.parseInt(id);
+    public Student getStudentById(@PathParam("id") String id) throws SQLException {
+        return controller.getStudentById(id);
+    }
 
-        return null;
+    @GET
+    @Path("/email/{address}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<Student> getStudentsByEmail(@PathParam("address") String email) throws SQLException {
+        return controller.getStudentsByEmail(email);
     }
 
     public ArrayList<String> getallTest(){

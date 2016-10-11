@@ -179,7 +179,7 @@ public class RepositoryOracle implements IRepository {
     }
 
     @Override
-    public Student getStudent(int studentId) throws SQLException {
+    public Student getStudentById(int studentId) throws SQLException {
         Student student = null;
         try {
             openConnection();
@@ -207,6 +207,34 @@ public class RepositoryOracle implements IRepository {
             closeConnection();
         }
         return student;
+    }
+
+    public ArrayList<Student> getStudentsByEmail(String studentMail) throws SQLException {
+        ArrayList<Student> result = new ArrayList<>();
+        try {
+            openConnection();
+            String query = "SELECT * FROM STUDENT WHERE email LIKE %?%";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                Student student = Student.builder().id(resultSet.getInt("studentid"))
+                        .company(getCompany(resultSet.getInt("companyid")))
+                        .name(resultSet.getString("studentname"))
+                        .lastName(resultSet.getString("lastname"))
+                        .email(resultSet.getString("email"))
+                        .accountNumber(resultSet.getString("accountnumber"))
+                        .address(resultSet.getString("address"))
+                        .build();
+                result.add(student);
+            }
+            resultSet.close();
+            stmt.close();
+        } finally {
+            closeConnection();
+        }
+        return result;
     }
 
     @Override

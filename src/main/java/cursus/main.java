@@ -1,13 +1,6 @@
 package cursus;
 
-import cursus.dal.repositories.IRepository;
-import cursus.dal.repositories.RepositoryOracle;
-import cursus.dal.validator.OracleValidator;
-import cursus.domain.Company;
-import cursus.domain.Course;
-import cursus.domain.Student;
-
-import java.time.LocalDate;
+import cursus.controller.Controller;
 
 /**
  * Created by maart on 7-10-2016.
@@ -16,9 +9,6 @@ public class main {
 
     public static void main(String[] args) {
 
-        OracleValidator validator = new OracleValidator();
-        validator.getStudent("abbsd");
-        System.out.println("continue...");
 
 //        IRepository data = new RepositoryOracle();
 
