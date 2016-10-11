@@ -1,14 +1,17 @@
 package cursus;
 
-import cursus.controller.Controller;
+import cursus.dal.courseimport.CourseImporter;
 
 /**
  * Created by maart on 7-10-2016.
  */
 public class main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
+        CourseImporter reader = new CourseImporter();
+
+        reader.getCoursesFromFile("D:/coursetest.txt");
 
 //        IRepository data = new RepositoryOracle();
 
