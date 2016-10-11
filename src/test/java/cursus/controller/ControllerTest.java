@@ -15,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static cursus.TestBuilders.testStudentBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
@@ -27,7 +28,9 @@ import static org.mockito.Mockito.when;
 public class ControllerTest {
 
     Company company;
-    Student student;
+    Company invalidCompany;
+    Student businessStudent;
+    Student privateStudent;
     ArrayList<Student> threeStudents;
     ArrayList<Student> zeroStudents;
 
@@ -48,17 +51,18 @@ public class ControllerTest {
                 .accountNumber("123456789")
                 .email("company@company.com")
                 .build();
-        student = Student.builder().id(1)
-                .company(company)
-                .name("studentname")
-                .lastName("studentlastname")
-                .address("studentaddress")
-                .email("studentemail")
+        invalidCompany = Company.builder().id(5)
+                .name("companyname")
+                .address("companyaddress")
+                .accountNumber("123456789")
+                .email("company@company.com")
                 .build();
+        businessStudent = testStudentBuilder().company(company).build();
+        privateStudent = testStudentBuilder().build();
         threeStudents = new ArrayList<>();
-        threeStudents.add(student);
-        threeStudents.add(student);
-        threeStudents.add(student);
+        threeStudents.add(businessStudent);
+        threeStudents.add(businessStudent);
+        threeStudents.add(businessStudent);
         zeroStudents = new ArrayList<>();
     }
 
@@ -101,7 +105,7 @@ public class ControllerTest {
 
     @Test
     public void getStudentById() throws SQLException {
-        when(repo.getStudentById(1)).thenReturn(student);
+        when(repo.getStudentById(1)).thenReturn(businessStudent);
 
         assertThat(controller.getStudentById("1").getName(),is("studentname"));
     }
@@ -114,10 +118,28 @@ public class ControllerTest {
     }
 
     @Test
-    public void addStudent() throws SQLException {
-        when(repo.addStudent(student)).thenReturn(true);
+    public void addStudentWithCompany() throws SQLException {
+        when(repo.getCompany(1)).thenReturn(company);
+        when(repo.addStudent(businessStudent)).thenReturn(true);
 
-        assertThat(controller.addStudent(student),is(true));
+        assertThat(controller.addStudent(businessStudent),is(true));
+    }
+
+    @Test
+    public void addStudentNoBusinessReference() throws SQLException {
+        when(repo.getCompany(0)).thenReturn(company);
+        when(repo.addStudent(privateStudent)).thenReturn(true);
+
+    }
+
+    @Test
+    public void addStudentInvalidBusinessReference() throws SQLException {
+        Student invalidCompanyStudent = testStudentBuilder().company(invalidCompany).build();
+
+        when(repo.getCompany(5)).thenReturn(null);
+        when(repo.addStudent(invalidCompanyStudent)).thenReturn(true);
+
+        assertThat(controller.addStudent(invalidCompanyStudent),is(false));
     }
 
 
