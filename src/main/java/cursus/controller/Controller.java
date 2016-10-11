@@ -1,14 +1,23 @@
 package cursus.controller;
 
 
+import cursus.dal.courseimport.CourseImporter;
+import cursus.dal.courseimport.ICourseImporter;
 import cursus.dal.repositories.IRepository;
 import cursus.dal.repositories.RepositoryOracle;
 import cursus.domain.Company;
+import cursus.domain.Course;
 import cursus.domain.Registration;
 import cursus.domain.Student;
 
 import java.sql.SQLException;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Locale;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Created by maart on 10-10-2016.
@@ -16,6 +25,7 @@ import java.util.ArrayList;
 public class Controller {
 
     IRepository repository = new RepositoryOracle();
+    ICourseImporter importer = new CourseImporter();
 
     public Student getStudentById(String id) throws SQLException {
         return repository.getStudentById(Integer.parseInt(id));
@@ -25,6 +35,9 @@ public class Controller {
         return repository.getStudentsByEmail(email);
     }
 
+    public ArrayList<Student> getStudentsByCompany(String id) throws SQLException{
+        return repository.getAllStudentsFromCompany(Integer.parseInt(id));
+    }
 
     public boolean addStudent(Student student) throws SQLException {
         if (student.getCompany() == null) {
@@ -60,4 +73,18 @@ public class Controller {
     }
 
 
+
+
+
+
+
+
+    public ArrayList<Course> getCoursesFromWeek(String week) throws SQLException {
+        int weekNumber = Integer.parseInt(week);
+        ArrayList<Course> allCourses = repository.getAllCourses();
+        ArrayList<Course> result = allCourses.stream()
+                .filter(course -> course.getDate().get(WeekFields.of(Locale.getDefault()).weekOfYear()) == weekNumber)
+                .collect(Collectors.toCollection(() -> new ArrayList<Course>()));
+        return result;
+    }
 }

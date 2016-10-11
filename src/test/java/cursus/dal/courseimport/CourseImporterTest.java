@@ -57,6 +57,18 @@ public class CourseImporterTest {
     }
 
     @Test
+    public void singleCourseDagenWrong() throws Exception {
+        String file = "Titel: C# Programmeren\r\n" +
+                "Cursuscode: CNETIN\r\n" +
+                "Duur: 5\r\n" +
+                "Startdatum: 14/10/2013\r\n";
+
+        when(reader.readFile("")).thenReturn(file);
+
+        assertThat(importer.getCoursesFromFile("").size(),is(0));
+    }
+
+    @Test
     public void singleCourseSwappedField() throws Exception {
         String file = "Titel: C# Programmeren\r\n" +
                 "Cursuscode: CNETIN\r\n" +

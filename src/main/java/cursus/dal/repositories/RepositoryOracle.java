@@ -294,5 +294,33 @@ public class RepositoryOracle implements IRepository {
         return company;
     }
 
+    @Override
+    public ArrayList<Student> getAllStudentsFromCompany(int companyId) throws SQLException {
+        ArrayList<Student> result = new ArrayList<>();
+        try {
+            openConnection();
+            String query = "SELECT * FROM STUDENT WHERE COMPANYID = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                Student student = Student.builder().id(resultSet.getInt("studentid"))
+                        .company(getCompany(resultSet.getInt("companyid")))
+                        .name(resultSet.getString("studentname"))
+                        .lastName(resultSet.getString("lastname"))
+                        .email(resultSet.getString("email"))
+                        .accountNumber(resultSet.getString("accountnumber"))
+                        .address(resultSet.getString("address"))
+                        .build();
+                result.add(student);
+            }
+            resultSet.close();
+            stmt.close();
+        } finally {
+            closeConnection();
+        }
+        return result;
+    }
 
 }

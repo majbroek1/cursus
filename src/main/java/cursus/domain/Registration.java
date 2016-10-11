@@ -8,8 +8,8 @@ import lombok.Data;
  * Created by maart on 10-10-2016.
  */
 @Data
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 public class Registration {
 
     private Course course;

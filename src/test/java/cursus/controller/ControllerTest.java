@@ -15,13 +15,17 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static cursus.TestBuilders.testStudentBuilder;
 import static cursus.TestBuilders.testCourseBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.when;
 
 /**
@@ -133,6 +137,7 @@ public class ControllerTest {
         when(repo.getCompany(0)).thenReturn(company);
         when(repo.addStudent(privateStudent)).thenReturn(true);
 
+        assertThat(controller.addStudent(privateStudent),is(true));
     }
 
     @Test
@@ -181,6 +186,18 @@ public class ControllerTest {
     }
 
     @Test
+    public void addRegistrationNullCompany() throws SQLException {
+        Student student = testStudentBuilder().id(1).company(null).build();
+        Course course = testCourseBuilder().id(1).build();
+        Registration registration = new Registration(course,student,false);
+        when(repo.getCourse(1)).thenReturn(testCourseBuilder().build());
+        when(repo.getStudentById(1)).thenReturn(testStudentBuilder().build());
+        when(repo.addRegistration(registration)).thenReturn(true);
+
+        assertThat(controller.addRegistration(registration), is(true));
+    }
+
+    @Test
     public void addRegistration() throws SQLException {
         Student student = testStudentBuilder().build();
         Course course = testCourseBuilder().build();
@@ -220,5 +237,72 @@ public class ControllerTest {
 
         assertThat(controller.addRegistration(registration), is(true));
     }
+
+    @Test
+    public void getStudentsFromCompany() throws SQLException{
+        when(repo.getAllStudentsFromCompany(1)).thenReturn(threeStudents);
+
+        assertThat(controller.getStudentsByCompany("1").size(),is(3));
+    }
+
+    @Test
+    public void getStudentsFromCompanyNone() throws SQLException {
+        when(repo.getAllStudentsFromCompany(1)).thenReturn(new ArrayList<Student>());
+
+        assertThat(controller.getStudentsByCompany("1").size(),is(0));
+    }
+
+    @Test
+    public void getStudentsFromCompanyNull() throws SQLException {
+        thrown.expect(NumberFormatException.class);
+
+        controller.getStudentsByCompany(null);
+    }
+
+    @Test
+    public void getStudentsFromCompanyWrongValue() throws SQLException {
+        thrown.expect(NumberFormatException.class);
+
+        controller.getStudentsByCompany("abc");
+    }
+
+    @Test
+    public void getCoursesFromWeekNull() throws SQLException {
+        thrown.expect(NumberFormatException.class);
+        controller.getCoursesFromWeek(null);
+    }
+
+    @Test
+    public void getCoursesFromWeekWrongValue() throws SQLException {
+        thrown.expect(NumberFormatException.class);
+        controller.getCoursesFromWeek("abc");
+    }
+
+    @Test
+    public void getCoursesFromWeek() throws SQLException {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate dateGood = LocalDate.parse("2016/10/15",df);
+        LocalDate dateBad = LocalDate.parse("2016/11/15",df);
+
+        Course goodCourse = Course.builder().date(dateGood).build();
+        Course badCourse = Course.builder().date(dateBad).build();
+        when(repo.getAllCourses()).thenReturn(new ArrayList<>(Arrays.asList(goodCourse,goodCourse,badCourse)));
+
+        assertThat(controller.getCoursesFromWeek("41").size(),is(2));
+    }
+
+    @Test
+    public void getNoCoursesFromWeek() throws SQLException {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate dateBad = LocalDate.parse("2016/11/15",df);
+
+        Course badCourse = Course.builder().date(dateBad).build();
+        when(repo.getAllCourses()).thenReturn(new ArrayList<>(Arrays.asList(badCourse,badCourse,badCourse)));
+
+        assertThat(controller.getCoursesFromWeek("41").size(),is(0));
+    }
+
+
+
 
 }

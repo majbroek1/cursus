@@ -21,50 +21,46 @@ public class CourseImporter implements ICourseImporter {
         for (String course : courseBlocks) {
             ArrayList<String> courseLines = getSeperateLines(course);
             if (courseLines.size() == 4) {
-                try {
-                    int successful = 0;
-                    Course.CourseBuilder courseBuild = Course.builder();
-                    ArrayList<Integer> positions = new ArrayList<>();
-                    for (String line : courseLines) {
-                        if (line.startsWith("Titel: ")) {
-                            courseBuild.name(line.substring(7, line.length()));
+                int successful = 0;
+                Course.CourseBuilder courseBuild = Course.builder();
+                ArrayList<Integer> positions = new ArrayList<>();
+                for (String line : courseLines) {
+                    if (line.startsWith("Titel: ")) {
+                        courseBuild.name(line.substring(7, line.length()));
+                        successful++;
+                        positions.add(1);
+                    }
+                    if (line.startsWith("Cursuscode: ")) {
+                        courseBuild.courseCode(line.substring(12, line.length()));
+                        successful++;
+                        positions.add(2);
+                    }
+                    if (line.startsWith("Duur: ")) {
+                        String daysString = line.substring(6, line.length());
+                        if (daysString.length() > 2) {
+                            courseBuild.duration(Integer.parseInt(daysString.substring(0, 1)));
                             successful++;
-                            positions.add(1);
-                        }
-                        if (line.startsWith("Cursuscode: ")) {
-                            courseBuild.courseCode(line.substring(12, line.length()));
-                            successful++;
-                            positions.add(2);
-                        }
-                        if (line.startsWith("Duur: ")) {
-                            String daysString = line.substring(6, line.length());
-                            if (daysString.length() > 2) {
-                                courseBuild.duration(Integer.parseInt(daysString.substring(0, 1)));
-                                successful++;
-                                positions.add(3);
-                            } else {
-                                System.out.println("word dagen is missing");
-                            }
-                        }
-                        if (line.startsWith("Startdatum: ")) {
-                            String givenDate = line.substring(12, line.length());
-                            DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                            LocalDate date = LocalDate.parse(givenDate, df);
-                            courseBuild.date(date);
-                            successful++;
-                            positions.add(4);
+                            positions.add(3);
+                        } else {
+                            System.out.println("word dagen is missing");
                         }
                     }
-                    if (successful == 4) {
-                        if (isCorrectOrder(positions)) {
-                            courses.add(courseBuild.build());
-                        }
-                        else{
-                            System.out.println("wrong field order");
-                        }
+                    if (line.startsWith("Startdatum: ")) {
+                        String givenDate = line.substring(12, line.length());
+                        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        LocalDate date = LocalDate.parse(givenDate, df);
+                        courseBuild.date(date);
+                        successful++;
+                        positions.add(4);
                     }
-                } catch (Exception e) {
-                    System.out.println(e);
+                }
+                if (successful == 4) {
+                    if (isCorrectOrder(positions)) {
+                        courses.add(courseBuild.build());
+                    }
+                    else{
+                        System.out.println("wrong field order");
+                    }
                 }
             } else {
                 System.out.println("Wrong file format");
@@ -75,11 +71,7 @@ public class CourseImporter implements ICourseImporter {
 
     private ArrayList<String> getCourseBlocks(String wholeDocument) {
         String[] courseBlocks = wholeDocument.split("\\r\\n\\r\\n");
-        if (courseBlocks.length == 0){
-            return new ArrayList<>(Arrays.asList(wholeDocument));
-        }else{
-            return new ArrayList<>(Arrays.asList(courseBlocks));
-        }
+        return new ArrayList<>(Arrays.asList(courseBlocks));
     }
 
     private ArrayList<String> getSeperateLines(String courseBlock) {
