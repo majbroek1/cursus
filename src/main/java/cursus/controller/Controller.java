@@ -4,6 +4,7 @@ package cursus.controller;
 import cursus.dal.repositories.IRepository;
 import cursus.dal.repositories.RepositoryOracle;
 import cursus.domain.Company;
+import cursus.domain.Registration;
 import cursus.domain.Student;
 
 import java.sql.SQLException;
@@ -37,4 +38,26 @@ public class Controller {
             return false;
         }
     }
+
+    public boolean addRegistration(Registration registration) throws SQLException {
+        if (registration.getStudent().getCompany() == null) {
+            Company company = Company.builder().id(0).build();
+            registration.getStudent().setCompany(company);
+        }
+        Company company = repository.getCompany(registration.getStudent().getCompany().getId());
+        if (registration.isBusiness() == true) {
+            //register
+            if (company != null){
+                return repository.addRegistration(registration);
+            }else{
+                registration.setBusiness(false);
+                return repository.addRegistration(registration);
+            }
+        }
+        else{
+            return repository.addRegistration(registration);
+        }
+    }
+
+
 }

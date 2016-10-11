@@ -14,20 +14,6 @@ public class CourseImporter implements ICourseImporter {
 
     private CourseFileReader fileReader = new CourseFileReader();
 
-    private ArrayList<String> getCourseBlocks(String wholeDocument) {
-        String[] courseBlocks = wholeDocument.split("\\r\\n\\r\\n");
-        if (courseBlocks.length == 0){
-            return new ArrayList<>(Arrays.asList(wholeDocument));
-        }else{
-            return new ArrayList<>(Arrays.asList(courseBlocks));
-        }
-    }
-
-    private ArrayList<String> getSeperateLines(String courseBlock) {
-        String[] seperateLines = courseBlock.split("\\r\\n");
-        return new ArrayList<>(Arrays.asList(seperateLines));
-    }
-
     public ArrayList<Course> getCoursesFromFile(String fileName) throws Exception {
         String wholeFile = fileReader.readFile(fileName);
         ArrayList<String> courseBlocks = getCourseBlocks(wholeFile);
@@ -85,6 +71,20 @@ public class CourseImporter implements ICourseImporter {
             }
         }
         return courses;
+    }
+
+    private ArrayList<String> getCourseBlocks(String wholeDocument) {
+        String[] courseBlocks = wholeDocument.split("\\r\\n\\r\\n");
+        if (courseBlocks.length == 0){
+            return new ArrayList<>(Arrays.asList(wholeDocument));
+        }else{
+            return new ArrayList<>(Arrays.asList(courseBlocks));
+        }
+    }
+
+    private ArrayList<String> getSeperateLines(String courseBlock) {
+        String[] seperateLines = courseBlock.split("\\r\\n");
+        return new ArrayList<>(Arrays.asList(seperateLines));
     }
 
     private boolean isCorrectOrder(ArrayList<Integer> positions) {

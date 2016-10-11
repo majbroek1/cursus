@@ -2,6 +2,7 @@ package cursus.dal.repositories;
 
 import cursus.domain.Company;
 import cursus.domain.Course;
+import cursus.domain.Registration;
 import cursus.domain.Student;
 
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ public interface IRepository {
 
     Company getCompany(int companyId) throws SQLException;
 
-
+    boolean addRegistration(Registration registration) throws SQLException;
 
 
 }

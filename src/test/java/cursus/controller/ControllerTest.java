@@ -2,6 +2,8 @@ package cursus.controller;
 
 import cursus.dal.repositories.RepositoryOracle;
 import cursus.domain.Company;
+import cursus.domain.Course;
+import cursus.domain.Registration;
 import cursus.domain.Student;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,6 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static cursus.TestBuilders.testStudentBuilder;
+import static cursus.TestBuilders.testCourseBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
@@ -142,5 +145,80 @@ public class ControllerTest {
         assertThat(controller.addStudent(invalidCompanyStudent),is(false));
     }
 
+    @Test
+    public void addRegistrationNoValidStudentAndCourse() throws SQLException {
+        Student student = testStudentBuilder().id(-1).build();
+        Course course = testCourseBuilder().id(-1).build();
+        Registration registration = new Registration(course,student,false);
+        when(repo.getCourse(-1)).thenReturn(null);
+        when(repo.getStudentById(-1)).thenReturn(null);
+        when(repo.addRegistration(registration)).thenReturn(false);
+
+
+        assertThat(controller.addRegistration(registration), is(false));
+    }
+
+    @Test
+    public void addRegistrationNoValidStudent() throws SQLException {
+        Student student = testStudentBuilder().id(-1).build();
+        Course course = testCourseBuilder().id(1).build();
+        Registration registration = new Registration(course,student,false);
+        when(repo.getCourse(1)).thenReturn(testCourseBuilder().build());
+        when(repo.getStudentById(-1)).thenReturn(null);
+
+        assertThat(controller.addRegistration(registration), is(false));
+    }
+
+    @Test
+    public void addRegistrationNoValidCourse() throws SQLException {
+        Student student = testStudentBuilder().id(1).build();
+        Course course = testCourseBuilder().id(-1).build();
+        Registration registration = new Registration(course,student,false);
+        when(repo.getCourse(-1)).thenReturn(null);
+        when(repo.getStudentById(1)).thenReturn(testStudentBuilder().build());
+
+        assertThat(controller.addRegistration(registration), is(false));
+    }
+
+    @Test
+    public void addRegistration() throws SQLException {
+        Student student = testStudentBuilder().build();
+        Course course = testCourseBuilder().build();
+        Registration registration = new Registration(course,student,false);
+
+        when(repo.getCourse(1)).thenReturn(testCourseBuilder().build());
+        when(repo.getStudentById(1)).thenReturn(testStudentBuilder().build());
+        when(repo.addRegistration(registration)).thenReturn(true);
+
+        assertThat(controller.addRegistration(registration), is(true));
+    }
+
+    @Test
+    public void addRegistrationForCompanyHas() throws SQLException {
+        Student student = testStudentBuilder().company(company).build();
+        Course course = testCourseBuilder().build();
+        Registration registration = new Registration(course,student,true);
+
+        when(repo.getCompany(1)).thenReturn(company);
+        when(repo.getCourse(1)).thenReturn(testCourseBuilder().build());
+        when(repo.getStudentById(1)).thenReturn(testStudentBuilder().build());
+        when(repo.addRegistration(registration)).thenReturn(true);
+
+        assertThat(controller.addRegistration(registration), is(true));
+    }
+
+    @Test
+    public void addRegistrationForCompanyInvalid() throws SQLException {
+        Student student = testStudentBuilder().company(company).build();
+        Course course = testCourseBuilder().build();
+        Registration registration = new Registration(course,student,true);
+
+        when(repo.getCompany(1)).thenReturn(null);
+        when(repo.getCourse(1)).thenReturn(testCourseBuilder().build());
+        when(repo.getStudentById(1)).thenReturn(testStudentBuilder().build());
+        when(repo.addRegistration(registration)).thenReturn(true);
+
+        assertThat(controller.addRegistration(registration), is(true));
+    }
 
 }

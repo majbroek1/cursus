@@ -2,6 +2,7 @@ package cursus.dal.repositories;
 
 import cursus.domain.Company;
 import cursus.domain.Course;
+import cursus.domain.Registration;
 import cursus.domain.Student;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -146,6 +147,34 @@ public class RepositoryOracle implements IRepository {
             }
             stmt.close();
         } finally {
+            closeConnection();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean addRegistration(Registration registration) throws SQLException {
+        boolean result = false;
+        try{
+            openConnection();
+
+            String query = "INSERT INTO REGISTRATION(COURSEID,STUDENTID,BUSINESS) VALUES (?,?,?)";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            int i = 1;
+            stmt.setInt(i++, registration.getCourse().getId());
+            stmt.setInt(i++, registration.getStudent().getId());
+            stmt.setInt(i++, registration.isBusiness() ? 1 : 0);
+
+            int numberOfRows = stmt.executeUpdate();
+
+            if (numberOfRows <= 0) {
+                result = false;
+            } else {
+                result = true;
+            }
+            stmt.close();
+        }finally{
             closeConnection();
         }
         return result;
