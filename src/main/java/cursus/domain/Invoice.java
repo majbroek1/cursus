@@ -10,6 +10,8 @@ import lombok.Data;
 @Builder
 public class Invoice {
     private String name;
+    private String courseName;
+    private String courseCode;
     private String companyName;
     private String email;
     private String accountNumber;

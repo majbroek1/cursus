@@ -31,6 +31,8 @@ public interface IRepository {
 
     boolean addRegistration(Registration registration) throws SQLException;
 
+    ArrayList<Registration> getAllRegistrations() throws SQLException;
+
     ArrayList<Student> getAllStudentsFromCompany(int companyId) throws SQLException;
 
 

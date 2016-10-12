@@ -35,8 +35,5 @@ public class JaxrsStudent {
         return controller.getStudentsByEmail(email);
     }
 
-    public ArrayList<String> getallTest(){
-        return new ArrayList<>(Arrays.asList("aaa", "bbb"));
-    }
 
 }

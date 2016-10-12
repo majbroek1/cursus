@@ -180,6 +180,32 @@ public class RepositoryOracle implements IRepository {
         return result;
     }
 
+    @Override
+    public ArrayList<Registration> getAllRegistrations() throws SQLException {
+        ArrayList<Registration> result = new ArrayList<>();
+        try{
+            openConnection();
+            String query = "SELECT * FROM REGISTRATION";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                Registration registration = Registration.builder().course(getCourse(resultSet.getInt("courseid")))
+                        .student(getStudentById(resultSet.getInt("studentid")))
+                        .business(resultSet.getBoolean("business"))
+                        .build();
+
+                result.add(registration);
+            }
+            resultSet.close();
+            stmt.close();
+        }finally {
+            closeConnection();
+        }
+        return result;
+    }
+
     public boolean addCourse(Course course) throws SQLException {
         boolean result = false;
         try {

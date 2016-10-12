@@ -5,18 +5,13 @@ import cursus.dal.courseimport.CourseImporter;
 import cursus.dal.courseimport.ICourseImporter;
 import cursus.dal.repositories.IRepository;
 import cursus.dal.repositories.RepositoryOracle;
-import cursus.domain.Company;
-import cursus.domain.Course;
-import cursus.domain.Registration;
-import cursus.domain.Student;
+import cursus.domain.*;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Locale;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -72,19 +67,76 @@ public class Controller {
         }
     }
 
-
-
-
-
-
-
-
     public ArrayList<Course> getCoursesFromWeek(String week) throws SQLException {
         int weekNumber = Integer.parseInt(week);
         ArrayList<Course> allCourses = repository.getAllCourses();
         ArrayList<Course> result = allCourses.stream()
-                .filter(course -> course.getDate().get(WeekFields.of(Locale.getDefault()).weekOfYear()) == weekNumber)
+                .filter(course -> getWeekNumber(course.getDate()) == weekNumber)
                 .collect(Collectors.toCollection(() -> new ArrayList<Course>()));
         return result;
     }
+
+    public boolean addCourses(String fileName) throws Exception {
+        boolean result = false;
+        ArrayList<Course> newCourses = importer.getCoursesFromFile(fileName);
+        for (Course newCourse: newCourses){
+            ArrayList<Course> oldCourses = repository.getAllCourses();
+            boolean taken = false;
+            for (Course oldCourse: oldCourses){
+                if ((newCourse.getDate().getDayOfYear() > oldCourse.getDate().getDayOfYear() &&
+                        newCourse.getDate().getDayOfYear() < oldCourse.getEndDate().getDayOfYear()
+                        ) || (
+                        newCourse.getEndDate().getDayOfYear() < oldCourse.getEndDate().getDayOfYear() &&
+                        newCourse.getEndDate().getDayOfYear() > oldCourse.getDate().getDayOfYear())){
+                    if (newCourse.getCourseCode().equalsIgnoreCase(oldCourse.getCourseCode())){
+                        taken = true;
+                    }
+                }
+            }
+            if (!taken){
+                repository.addCourse(newCourse);
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    private int getWeekNumber(LocalDate date){
+        return date.get(WeekFields.of(Locale.getDefault()).weekOfYear());
+    }
+
+    public ArrayList<Invoice> getInvoicesForWeekNumber(String week) throws SQLException {
+        int weekNumber = Integer.parseInt(week);
+        ArrayList<Registration> registrations = repository.getAllRegistrations().stream()
+                .filter(reg -> getWeekNumber(reg.getCourse().getDate()) == weekNumber)
+                .collect(Collectors.toCollection(() -> new ArrayList<>()));
+        ArrayList<Invoice> invoices = new ArrayList<>();
+
+        for (Registration reg: registrations){
+            if (reg.isBusiness()){
+                Invoice invoice = Invoice.builder().name(reg.getStudent().getName())
+                        .companyName(reg.getStudent().getCompany().getName())
+                        .accountNumber(reg.getStudent().getCompany().getAccountNumber())
+                        .email(reg.getStudent().getCompany().getEmail())
+                        .courseName(reg.getCourse().getName())
+                        .courseCode(reg.getCourse().getCourseCode())
+                        .build();
+                invoices.add(invoice);
+            }
+            else{
+                Invoice invoice = Invoice.builder().name(reg.getStudent().getName())
+                        .companyName("N.V.T.")
+                        .accountNumber(reg.getStudent().getAccountNumber())
+                        .email(reg.getStudent().getEmail())
+                        .courseName(reg.getCourse().getName())
+                        .courseCode(reg.getCourse().getCourseCode())
+                        .build();
+                invoices.add(invoice);
+            }
+        }
+        return invoices;
+    }
+
+
+
 }
