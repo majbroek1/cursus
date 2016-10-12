@@ -102,7 +102,7 @@ public class Controller {
     }
 
     private int getWeekNumber(LocalDate date){
-        return date.get(WeekFields.of(Locale.getDefault()).weekOfYear());
+        return date.get(WeekFields.of(Locale.GERMANY).weekOfYear());
     }
 
     public ArrayList<Invoice> getInvoicesForWeekNumber(String week) throws SQLException {
