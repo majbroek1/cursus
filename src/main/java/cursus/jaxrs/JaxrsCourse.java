@@ -22,7 +22,7 @@ public class JaxrsCourse {
     @GET
     @Path("/weeknr/{nr}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<Course> getCourseById(@PathParam("nr") String nr) throws SQLException {
+    public ArrayList<Course> getCourseFromWeekNr(@PathParam("nr") String nr) throws SQLException {
         return controller.getCoursesFromWeek(nr);
     }
 
