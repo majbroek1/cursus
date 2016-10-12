@@ -48,7 +48,7 @@ public class ControllerStudentTest {
     private Controller controller;
 
     @Before
-    public void Init(){
+    public void init(){
         company = Company.builder().id(1)
                 .name("companyname")
                 .address("companyaddress")

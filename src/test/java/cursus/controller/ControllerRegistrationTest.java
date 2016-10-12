@@ -33,9 +33,6 @@ public class ControllerRegistrationTest {
 
     private Company company;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Mock
     private RepositoryOracle repo;
 
@@ -46,7 +43,7 @@ public class ControllerRegistrationTest {
     private Controller controller;
 
     @Before
-    public void Init(){
+    public void init(){
         company = Company.builder().id(1)
                 .name("companyname")
                 .address("companyaddress")

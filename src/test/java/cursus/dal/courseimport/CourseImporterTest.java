@@ -18,18 +18,12 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class CourseImporterTest {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Mock
-    private CourseFileReader reader;
 
     @InjectMocks
     CourseImporter importer = new CourseImporter();
 
     @Test
     public void emptyFile() throws Exception {
-        when(reader.readFile("")).thenReturn("");
 
         importer.getCoursesFromFile("");
         assertThat(importer.getCoursesFromFile("").size(), is(0));
@@ -85,7 +79,6 @@ public class CourseImporterTest {
                 "Duur: 5 dagen\r\n" +
                 "Startdatum: 21/10/2013";
 
-        when(reader.readFile("")).thenReturn(file);
 
         assertThat(importer.getCoursesFromFile(file).size(), is(2));
     }
@@ -107,8 +100,6 @@ public class CourseImporterTest {
                         "Titel: C# Programmeren\r\n" +
                         "Duur: 5 dagen\r\n" +
                         "Startdatum: 21/10/2013";
-
-        when(reader.readFile("")).thenReturn(file);
 
         assertThat(importer.getCoursesFromFile(file).size(), is(2));
     }

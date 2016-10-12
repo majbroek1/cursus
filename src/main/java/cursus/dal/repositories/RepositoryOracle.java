@@ -45,7 +45,7 @@ public class RepositoryOracle implements IRepository {
 
             PreparedStatement stmt = conn.prepareStatement(query);
             int i = 1;
-            stmt.setInt(i++, courseId);
+            stmt.setInt(i, courseId);
 
             ResultSet resultSet = stmt.executeQuery();
 
@@ -242,7 +242,7 @@ public class RepositoryOracle implements IRepository {
 
             PreparedStatement stmt = conn.prepareStatement(query);
             int i = 1;
-            stmt.setInt(i++, studentId);
+            stmt.setInt(i, studentId);
 
             ResultSet resultSet = stmt.executeQuery();
 
@@ -276,7 +276,7 @@ public class RepositoryOracle implements IRepository {
                     .append(studentMail)
                     .append("%")
                     .toString();
-            stmt.setString(i++, mailString);
+            stmt.setString(i, mailString);
 
             ResultSet resultSet = stmt.executeQuery();
 
@@ -308,7 +308,7 @@ public class RepositoryOracle implements IRepository {
 
             PreparedStatement stmt = conn.prepareStatement(query);
             int i = 1;
-            stmt.setInt(i++, companyId);
+            stmt.setInt(i, companyId);
 
             ResultSet resultSet = stmt.executeQuery();
 
@@ -335,7 +335,7 @@ public class RepositoryOracle implements IRepository {
             String query = "SELECT * FROM STUDENT WHERE COMPANYID = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             int i = 1;
-            stmt.setInt(i++, companyId);
+            stmt.setInt(i, companyId);
 
             ResultSet resultSet = stmt.executeQuery();
 
