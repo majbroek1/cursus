@@ -43,18 +43,16 @@ public class JaxrsStudent {
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response addStudent(Student student){
-        try{
+    public Response addStudent(Student student) {
+        try {
             UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
             uriBuilder.path(Integer.toString(student.getId()));
-            if (controller.addStudent(student)){
+            if (controller.addStudent(student)) {
                 return Response.created(uriBuilder.build()).build();
-            }
-            else{
+            } else {
                 return Response.status(400).build();
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             return Response.status(400).build();
         }
     }

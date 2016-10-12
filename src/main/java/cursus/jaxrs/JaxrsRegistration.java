@@ -22,13 +22,12 @@ public class JaxrsRegistration {
     UriInfo uriInfo;
 
     @POST
-    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    public Response addRegistration(Registration registration){
-        try{
-            if (controller.addRegistration(registration)){
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response addRegistration(Registration registration) {
+        try {
+            if (controller.addRegistration(registration)) {
                 return Response.status(200).build();
-            }
-            else{
+            } else {
                 return Response.status(400).build();
             }
         } catch (Exception e) {

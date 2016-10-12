@@ -30,7 +30,7 @@ public class Controller {
         return repository.getStudentsByEmail(email);
     }
 
-    public ArrayList<Student> getStudentsByCompany(String id) throws SQLException{
+    public ArrayList<Student> getStudentsByCompany(String id) throws SQLException {
         return repository.getAllStudentsFromCompany(Integer.parseInt(id));
     }
 
@@ -55,14 +55,13 @@ public class Controller {
         Company company = repository.getCompany(registration.getStudent().getCompany().getId());
         if (registration.isBusiness() == true) {
             //register
-            if (company != null){
+            if (company != null) {
                 return repository.addRegistration(registration);
-            }else{
+            } else {
                 registration.setBusiness(false);
                 return repository.addRegistration(registration);
             }
-        }
-        else{
+        } else {
             return repository.addRegistration(registration);
         }
     }
@@ -79,21 +78,21 @@ public class Controller {
     public boolean addCourses(String wholeFile) throws Exception {
         boolean result = false;
         ArrayList<Course> newCourses = importer.getCoursesFromFile(wholeFile);
-        for (Course newCourse: newCourses){
+        for (Course newCourse : newCourses) {
             ArrayList<Course> oldCourses = repository.getAllCourses();
             boolean taken = false;
-            for (Course oldCourse: oldCourses){
+            for (Course oldCourse : oldCourses) {
                 if ((newCourse.getDate().getDayOfYear() >= oldCourse.getDate().getDayOfYear() &&
                         newCourse.getDate().getDayOfYear() <= oldCourse.getEndDate().getDayOfYear()
-                        ) || (
+                ) || (
                         newCourse.getEndDate().getDayOfYear() <= oldCourse.getEndDate().getDayOfYear() &&
-                        newCourse.getEndDate().getDayOfYear() >= oldCourse.getDate().getDayOfYear())){
-                    if (newCourse.getCourseCode().equalsIgnoreCase(oldCourse.getCourseCode())){
+                                newCourse.getEndDate().getDayOfYear() >= oldCourse.getDate().getDayOfYear())) {
+                    if (newCourse.getCourseCode().equalsIgnoreCase(oldCourse.getCourseCode())) {
                         taken = true;
                     }
                 }
             }
-            if (!taken){
+            if (!taken) {
                 repository.addCourse(newCourse);
                 result = true;
             }
@@ -101,7 +100,7 @@ public class Controller {
         return result;
     }
 
-    private int getWeekNumber(LocalDate date){
+    private int getWeekNumber(LocalDate date) {
         //Germany ipv default. Lokaal werkt het, build server niet. NL is er niet, maar Germany ligt het dichtst bij wat voor deze case overeen komt met NL.
         return date.get(WeekFields.of(Locale.GERMANY).weekOfYear());
     }
@@ -113,8 +112,8 @@ public class Controller {
                 .collect(Collectors.toCollection(() -> new ArrayList<>()));
         ArrayList<Invoice> invoices = new ArrayList<>();
 
-        for (Registration reg: registrations){
-            if (reg.isBusiness()){
+        for (Registration reg : registrations) {
+            if (reg.isBusiness()) {
                 Invoice invoice = Invoice.builder().name(reg.getStudent().getName())
                         .companyName(reg.getStudent().getCompany().getName())
                         .accountNumber(reg.getStudent().getCompany().getAccountNumber())
@@ -123,8 +122,7 @@ public class Controller {
                         .courseCode(reg.getCourse().getCourseCode())
                         .build();
                 invoices.add(invoice);
-            }
-            else{
+            } else {
                 Invoice invoice = Invoice.builder().name(reg.getStudent().getName())
                         .companyName("N.V.T.")
                         .accountNumber(reg.getStudent().getAccountNumber())
@@ -137,7 +135,6 @@ public class Controller {
         }
         return invoices;
     }
-
 
 
 }

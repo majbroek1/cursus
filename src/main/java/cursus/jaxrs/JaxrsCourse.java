@@ -28,15 +28,14 @@ public class JaxrsCourse {
 
     @POST
     @Consumes(MediaType.TEXT_PLAIN)
-    public Response addCourses(String text){
-        try{
+    public Response addCourses(String text) {
+        try {
             if (controller.addCourses(text)) {
                 return Response.status(200).build();
-            }
-            else{
+            } else {
                 return Response.status(400).build();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             return Response.status(400).build();
         }
     }

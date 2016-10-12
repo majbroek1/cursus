@@ -54,8 +54,7 @@ public class CourseImporter implements ICourseImporter {
                 if (successful == 4) {
                     if (isCorrectOrder(positions)) {
                         courses.add(courseBuild.build());
-                    }
-                    else{
+                    } else {
                         System.out.println("wrong field order");
                     }
                 }

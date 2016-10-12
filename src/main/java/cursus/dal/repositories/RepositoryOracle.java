@@ -132,11 +132,11 @@ public class RepositoryOracle implements IRepository {
             PreparedStatement stmt = conn.prepareStatement(query);
             int i = 1;
             stmt.setInt(i++, student.getCompany().getId());
-            stmt.setString(i++,student.getName());
-            stmt.setString(i++,student.getLastName());
-            stmt.setString(i++,student.getEmail());
-            stmt.setString(i++,student.getAccountNumber());
-            stmt.setString(i++,student.getAddress());
+            stmt.setString(i++, student.getName());
+            stmt.setString(i++, student.getLastName());
+            stmt.setString(i++, student.getEmail());
+            stmt.setString(i++, student.getAccountNumber());
+            stmt.setString(i++, student.getAddress());
 
             int numberOfRows = stmt.executeUpdate();
 
@@ -155,7 +155,7 @@ public class RepositoryOracle implements IRepository {
     @Override
     public boolean addRegistration(Registration registration) throws SQLException {
         boolean result = false;
-        try{
+        try {
             openConnection();
 
             String query = "INSERT INTO REGISTRATION(COURSEID,STUDENTID,BUSINESS) VALUES (?,?,?)";
@@ -174,7 +174,7 @@ public class RepositoryOracle implements IRepository {
                 result = true;
             }
             stmt.close();
-        }finally{
+        } finally {
             closeConnection();
         }
         return result;
@@ -183,7 +183,7 @@ public class RepositoryOracle implements IRepository {
     @Override
     public ArrayList<Registration> getAllRegistrations() throws SQLException {
         ArrayList<Registration> result = new ArrayList<>();
-        try{
+        try {
             openConnection();
             String query = "SELECT * FROM REGISTRATION";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -200,7 +200,7 @@ public class RepositoryOracle implements IRepository {
             }
             resultSet.close();
             stmt.close();
-        }finally {
+        } finally {
             closeConnection();
         }
         return result;

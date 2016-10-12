@@ -36,5 +36,4 @@ public interface IRepository {
     ArrayList<Student> getAllStudentsFromCompany(int companyId) throws SQLException;
 
 
-
 }

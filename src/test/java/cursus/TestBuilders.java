@@ -10,7 +10,7 @@ import java.time.LocalDate;
  */
 public class TestBuilders {
 
-    public static Student.StudentBuilder testStudentBuilder(){
+    public static Student.StudentBuilder testStudentBuilder() {
         return Student.builder().id(1)
                 .name("studentname")
                 .lastName("studentlastname")
@@ -18,7 +18,7 @@ public class TestBuilders {
                 .email("studentemail");
     }
 
-    public static Course.CourseBuilder testCourseBuilder(){
+    public static Course.CourseBuilder testCourseBuilder() {
         return Course.builder().id(1)
                 .name("coursename")
                 .date(LocalDate.now())

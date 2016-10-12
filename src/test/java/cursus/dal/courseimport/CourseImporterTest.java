@@ -32,15 +32,15 @@ public class CourseImporterTest {
         when(reader.readFile("")).thenReturn("");
 
         importer.getCoursesFromFile("");
-        assertThat(importer.getCoursesFromFile("").size(),is(0));
+        assertThat(importer.getCoursesFromFile("").size(), is(0));
     }
 
     @Test
     public void singleHalfCourse() throws Exception {
         String file = "Titel: C# Programmeren\r\n" +
-                      "Cursuscode: CNETIN\r\n";
+                "Cursuscode: CNETIN\r\n";
 
-        assertThat(importer.getCoursesFromFile(file).size(),is(0));
+        assertThat(importer.getCoursesFromFile(file).size(), is(0));
     }
 
     @Test
@@ -50,7 +50,7 @@ public class CourseImporterTest {
                 "Duur: 5 dagen\r\n" +
                 "Startdatum: 14/10/2013\r\n";
 
-        assertThat(importer.getCoursesFromFile(file).size(),is(1));
+        assertThat(importer.getCoursesFromFile(file).size(), is(1));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class CourseImporterTest {
                 "Duur: 5\r\n" +
                 "Startdatum: 14/10/2013\r\n";
 
-        assertThat(importer.getCoursesFromFile(file).size(),is(0));
+        assertThat(importer.getCoursesFromFile(file).size(), is(0));
     }
 
     @Test
@@ -68,9 +68,9 @@ public class CourseImporterTest {
         String file = "Titel: C# Programmeren\r\n" +
                 "Cursuscode: CNETIN\r\n" +
                 "Startdatum: 14/10/2013\r\n" +
-                "Duur: 5 dagen\r\n" ;
+                "Duur: 5 dagen\r\n";
 
-        assertThat(importer.getCoursesFromFile(file).size(),is(0));
+        assertThat(importer.getCoursesFromFile(file).size(), is(0));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class CourseImporterTest {
                 "Duur: 5 dagen\r\n" +
                 "Startdatum: 21/10/2013";
 
-        when (reader.readFile("")).thenReturn(file);
+        when(reader.readFile("")).thenReturn(file);
 
         assertThat(importer.getCoursesFromFile(file).size(), is(2));
     }
@@ -94,21 +94,21 @@ public class CourseImporterTest {
     public void threeCoursesOneWrong() throws Exception {
         String file =
                 "Titel: C# Programmeren\r\n" +
-                "Cursuscode: CNETIN\r\n" +
-                "Duur: 5 dagen\r\n" +
-                "Startdatum: 14/10/2013\r\n" +
-                "\r\n" +
-                "Titel: C# Programmeren\r\n" +
-                "Cursuscode: CNETIN\r\n" +
-                "Duur: 5 dagen\r\n" +
-                "Startdatum: 21/10/2013\r\n" +
-                "\r\n" +
-                "Cursuscode: CNETIN\r\n" +
-                "Titel: C# Programmeren\r\n" +
-                "Duur: 5 dagen\r\n" +
-                "Startdatum: 21/10/2013";
+                        "Cursuscode: CNETIN\r\n" +
+                        "Duur: 5 dagen\r\n" +
+                        "Startdatum: 14/10/2013\r\n" +
+                        "\r\n" +
+                        "Titel: C# Programmeren\r\n" +
+                        "Cursuscode: CNETIN\r\n" +
+                        "Duur: 5 dagen\r\n" +
+                        "Startdatum: 21/10/2013\r\n" +
+                        "\r\n" +
+                        "Cursuscode: CNETIN\r\n" +
+                        "Titel: C# Programmeren\r\n" +
+                        "Duur: 5 dagen\r\n" +
+                        "Startdatum: 21/10/2013";
 
-        when (reader.readFile("")).thenReturn(file);
+        when(reader.readFile("")).thenReturn(file);
 
         assertThat(importer.getCoursesFromFile(file).size(), is(2));
     }
@@ -117,23 +117,22 @@ public class CourseImporterTest {
     public void threeCoursesThreeWrong() throws Exception {
         String file =
                 "Cursuscode: CNETIN\r\n" +
-                "Titel: C# Programmeren\r\n" +
-                "Duur: 5 dagen\r\n" +
-                "Startdatum: 14/10/2013\r\n" +
-                "\r\n" +
-                "Cursuscode: CNETIN\r\n" +
-                "Titel: C# Programmeren\r\n" +
-                "Duur: 5 dagen\r\n" +
-                "Startdatum: 21/10/2013\r\n" +
-                "\r\n" +
-                "Cursuscode: CNETIN\r\n" +
-                "Titel: C# Programmeren\r\n" +
-                "Duur: 5 dagen\r\n" +
-                "Startdatum: 21/10/2013";
+                        "Titel: C# Programmeren\r\n" +
+                        "Duur: 5 dagen\r\n" +
+                        "Startdatum: 14/10/2013\r\n" +
+                        "\r\n" +
+                        "Cursuscode: CNETIN\r\n" +
+                        "Titel: C# Programmeren\r\n" +
+                        "Duur: 5 dagen\r\n" +
+                        "Startdatum: 21/10/2013\r\n" +
+                        "\r\n" +
+                        "Cursuscode: CNETIN\r\n" +
+                        "Titel: C# Programmeren\r\n" +
+                        "Duur: 5 dagen\r\n" +
+                        "Startdatum: 21/10/2013";
 
         assertThat(importer.getCoursesFromFile(file).size(), is(0));
     }
-
 
 
 }

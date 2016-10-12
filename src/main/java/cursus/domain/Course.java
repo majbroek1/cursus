@@ -23,7 +23,7 @@ public class Course {
     private int duration;
     private String courseCode;
 
-    public LocalDate getEndDate(){
+    public LocalDate getEndDate() {
         return date.plusDays(duration);
     }
 

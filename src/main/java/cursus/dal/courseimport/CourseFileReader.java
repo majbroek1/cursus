@@ -11,18 +11,18 @@ import java.nio.file.Paths;
 public class CourseFileReader {
 
     public String readFile(String fileName) throws IOException {
-        if (fileExists(fileName)){
+        if (fileExists(fileName)) {
             return new String(Files.readAllBytes(Paths.get(fileName)));
-        }else{
+        } else {
             throw new IOException("No file found");
         }
     }
 
-    public boolean fileExists(String fileName){
+    public boolean fileExists(String fileName) {
         File f = new File(fileName);
-        if (f.exists()){
+        if (f.exists()) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
