@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 public interface ICourseImporter {
 
-    public ArrayList<Course> getCoursesFromFile(String fileName) throws Exception;
+    ArrayList<Course> getCoursesFromFile(String wholeFile) throws Exception;
 }

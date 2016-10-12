@@ -359,6 +359,20 @@ public class ControllerTest {
     }
 
     @Test
+    public void addCourseStartDateSameTwoSameTypes() throws Exception {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate firstDate = LocalDate.parse("2016/11/15", df);
+
+        Course course1 = testCourseBuilder().date(firstDate).duration(5).courseCode("AAA").build();
+        Course course2 = testCourseBuilder().date(firstDate).duration(5).courseCode("AAA").build();
+
+        when(repo.getAllCourses()).thenReturn(new ArrayList<>(Arrays.asList(course1)));
+        when(impo.getCoursesFromFile("")).thenReturn(new ArrayList<>(Arrays.asList(course2)));
+
+        assertThat(controller.addCourses(""), is(false));
+    }
+
+    @Test
     public void addCourseSameTypesInUnusedTimeSlot() throws Exception {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDate firstDate = LocalDate.parse("2016/11/15", df);

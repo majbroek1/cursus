@@ -12,10 +12,7 @@ import java.util.Arrays;
  */
 public class CourseImporter implements ICourseImporter {
 
-    private CourseFileReader fileReader = new CourseFileReader();
-
-    public ArrayList<Course> getCoursesFromFile(String fileName) throws Exception {
-        String wholeFile = fileReader.readFile(fileName);
+    public ArrayList<Course> getCoursesFromFile(String wholeFile) throws Exception {
         ArrayList<String> courseBlocks = getCourseBlocks(wholeFile);
         ArrayList<Course> courses = new ArrayList<>();
         for (String course : courseBlocks) {

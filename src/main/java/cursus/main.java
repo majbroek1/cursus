@@ -39,6 +39,8 @@ public class main {
         Registration registration = Registration.builder().course(course2).student(Student.builder().id(8).build()).business(false).build();
 
 
+        System.out.println(data.getStudentsByEmail("msn"));
+
 //        ArrayList<Registration> registrations = data.getAllRegistrations();
 //        System.out.println(data.getAllRegistrations().size());
 //        System.out.println(data.addCourse(course));
@@ -47,7 +49,7 @@ public class main {
 //        System.out.println(data.getCompany(1).getName());
 //        System.out.println(data.getStudentById(8).getName());
 //        System.out.println(data.addStudent(student));
-        System.out.println(data.addRegistration(registration));
+        //System.out.println(data.addRegistration(registration));
 
     }
 }

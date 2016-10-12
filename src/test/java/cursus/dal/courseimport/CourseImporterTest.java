@@ -39,9 +39,8 @@ public class CourseImporterTest {
     public void singleHalfCourse() throws Exception {
         String file = "Titel: C# Programmeren\r\n" +
                       "Cursuscode: CNETIN\r\n";
-        when(reader.readFile("")).thenReturn(file);
 
-        assertThat(importer.getCoursesFromFile("").size(),is(0));
+        assertThat(importer.getCoursesFromFile(file).size(),is(0));
     }
 
     @Test
@@ -51,9 +50,7 @@ public class CourseImporterTest {
                 "Duur: 5 dagen\r\n" +
                 "Startdatum: 14/10/2013\r\n";
 
-        when(reader.readFile("")).thenReturn(file);
-
-        assertThat(importer.getCoursesFromFile("").size(),is(1));
+        assertThat(importer.getCoursesFromFile(file).size(),is(1));
     }
 
     @Test
@@ -63,9 +60,7 @@ public class CourseImporterTest {
                 "Duur: 5\r\n" +
                 "Startdatum: 14/10/2013\r\n";
 
-        when(reader.readFile("")).thenReturn(file);
-
-        assertThat(importer.getCoursesFromFile("").size(),is(0));
+        assertThat(importer.getCoursesFromFile(file).size(),is(0));
     }
 
     @Test
@@ -75,9 +70,7 @@ public class CourseImporterTest {
                 "Startdatum: 14/10/2013\r\n" +
                 "Duur: 5 dagen\r\n" ;
 
-        when(reader.readFile("")).thenReturn(file);
-
-        assertThat(importer.getCoursesFromFile("").size(),is(0));
+        assertThat(importer.getCoursesFromFile(file).size(),is(0));
     }
 
     @Test
@@ -94,7 +87,7 @@ public class CourseImporterTest {
 
         when (reader.readFile("")).thenReturn(file);
 
-        assertThat(importer.getCoursesFromFile("").size(), is(2));
+        assertThat(importer.getCoursesFromFile(file).size(), is(2));
     }
 
     @Test
@@ -117,7 +110,7 @@ public class CourseImporterTest {
 
         when (reader.readFile("")).thenReturn(file);
 
-        assertThat(importer.getCoursesFromFile("").size(), is(2));
+        assertThat(importer.getCoursesFromFile(file).size(), is(2));
     }
 
     @Test
@@ -138,9 +131,7 @@ public class CourseImporterTest {
                 "Duur: 5 dagen\r\n" +
                 "Startdatum: 21/10/2013";
 
-        when (reader.readFile("")).thenReturn(file);
-
-        assertThat(importer.getCoursesFromFile("").size(), is(0));
+        assertThat(importer.getCoursesFromFile(file).size(), is(0));
     }
 
 

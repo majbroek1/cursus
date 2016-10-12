@@ -268,8 +268,15 @@ public class RepositoryOracle implements IRepository {
         ArrayList<Student> result = new ArrayList<>();
         try {
             openConnection();
-            String query = "SELECT * FROM STUDENT WHERE email LIKE %?%";
+            String query = "SELECT * FROM STUDENT WHERE email LIKE ?";
+
             PreparedStatement stmt = conn.prepareStatement(query);
+            int i = 1;
+            String mailString = new StringBuilder().append("%")
+                    .append(studentMail)
+                    .append("%")
+                    .toString();
+            stmt.setString(i++, mailString);
 
             ResultSet resultSet = stmt.executeQuery();
 
@@ -327,6 +334,8 @@ public class RepositoryOracle implements IRepository {
             openConnection();
             String query = "SELECT * FROM STUDENT WHERE COMPANYID = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
+            int i = 1;
+            stmt.setInt(i++, companyId);
 
             ResultSet resultSet = stmt.executeQuery();
 

@@ -76,18 +76,18 @@ public class Controller {
         return result;
     }
 
-    public boolean addCourses(String fileName) throws Exception {
+    public boolean addCourses(String wholeFile) throws Exception {
         boolean result = false;
-        ArrayList<Course> newCourses = importer.getCoursesFromFile(fileName);
+        ArrayList<Course> newCourses = importer.getCoursesFromFile(wholeFile);
         for (Course newCourse: newCourses){
             ArrayList<Course> oldCourses = repository.getAllCourses();
             boolean taken = false;
             for (Course oldCourse: oldCourses){
-                if ((newCourse.getDate().getDayOfYear() > oldCourse.getDate().getDayOfYear() &&
-                        newCourse.getDate().getDayOfYear() < oldCourse.getEndDate().getDayOfYear()
+                if ((newCourse.getDate().getDayOfYear() >= oldCourse.getDate().getDayOfYear() &&
+                        newCourse.getDate().getDayOfYear() <= oldCourse.getEndDate().getDayOfYear()
                         ) || (
-                        newCourse.getEndDate().getDayOfYear() < oldCourse.getEndDate().getDayOfYear() &&
-                        newCourse.getEndDate().getDayOfYear() > oldCourse.getDate().getDayOfYear())){
+                        newCourse.getEndDate().getDayOfYear() <= oldCourse.getEndDate().getDayOfYear() &&
+                        newCourse.getEndDate().getDayOfYear() >= oldCourse.getDate().getDayOfYear())){
                     if (newCourse.getCourseCode().equalsIgnoreCase(oldCourse.getCourseCode())){
                         taken = true;
                     }
@@ -102,6 +102,7 @@ public class Controller {
     }
 
     private int getWeekNumber(LocalDate date){
+        //Germany ipv default. Lokaal werkt het, build server niet. NL is er niet, maar Germany ligt het dichtst bij wat voor deze case overeen komt met NL.
         return date.get(WeekFields.of(Locale.GERMANY).weekOfYear());
     }
 
